@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TURBO PC — игровые компьютеры</title>
+<style>
+:root{
+  --bg:#0d0b10;
+  --bg2:#15121a;
+  --card:rgba(255,255,255,.04);
+  --line:rgba(255,255,255,.09);
+  --txt:#f2eef2;
+  --muted:#9c93a3;
+  --accent:#ff3b2f;
+  --accent2:#ff8a00;
+  --glow:rgba(255,59,47,.35);
+  --ok:#37d67a;
+  --radius:16px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:var(--bg);color:var(--txt);font-family:'Segoe UI',system-ui,sans-serif;line-height:1.5}
+a{color:inherit;text-decoration:none}
+.wrap{max-width:1180px;margin:0 auto;padding:0 20px}
+
+/* шапка */
+header{position:sticky;top:0;z-index:50;background:rgba(13,11,16,.85);backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.nav{display:flex;align-items:center;justify-content:space-between;height:66px}
+.logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:20px;letter-spacing:1px}
+.logo .mark{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-size:17px}
+.logo em{font-style:normal;color:var(--accent)}
+nav.links{display:flex;gap:26px;font-size:15px;color:var(--muted)}
+nav.links a:hover{color:var(--accent)}
+.burger{display:none;background:none;border:0;color:var(--txt);font-size:24px;cursor:pointer}
+.mobile-menu{display:none;flex-direction:column;gap:14px;padding:14px 20px;border-top:1px solid var(--line);background:var(--bg)}
+.mobile-menu a{color:var(--muted)}
+.mobile-menu.open{display:flex}
+
+/* герой */
+.hero{position:relative;overflow:hidden;padding:90px 0 70px;text-align:center}
+.hero:before{content:"";position:absolute;inset:0;
+  background:
+   radial-gradient(600px 300px at 20% 10%,rgba(255,59,47,.18),transparent 70%),
+   radial-gradient(700px 320px at 80% 0%,rgba(255,138,0,.14),transparent 70%);}
+.stripe{position:absolute;left:0;right:0;height:2px;top:0;
+  background:repeating-linear-gradient(90deg,var(--accent) 0 40px,transparent 40px 80px);opacity:.5}
+.hero h1{font-size:clamp(32px,6vw,58px);font-weight:900;letter-spacing:-1px}
+.hero h1 span{background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{color:var(--muted);max-width:620px;margin:16px auto 30px;font-size:17px}
+.btn{display:inline-block;padding:13px 28px;border-radius:12px;font-weight:700;font-size:15px;cursor:pointer;border:0;transition:.2s}
+.btn-primary{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:0 8px 30px var(--glow)}
+.btn-primary:hover{transform:translateY(-2px)}
+.btn-ghost{background:transparent;border:1px solid var(--line);color:var(--txt)}
+.btn-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+/* фильтры */
+.filters{display:flex;gap:10px;justify-content:center;margin:34px 0 8px;flex-wrap:wrap}
+.chip{padding:9px 22px;border-radius:99px;border:1px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer;font-size:14px;font-weight:600;transition:.2s}
+.chip.active,.chip:hover{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border-color:transparent}
+
+/* каталог */
+.section-title{text-align:center;font-size:28px;font-weight:800;margin:40px 0 6px}
+.section-sub{text-align:center;color:var(--muted);margin-bottom:28px;font-size:15px}
+.catalog{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:22px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px;position:relative;overflow:hidden;transition:.25s}
+.card:hover{transform:translateY(-4px);border-color:rgba(255,59,47,.45);box-shadow:0 14px 40px rgba(255,59,47,.12)}
+.card:before{content:"";position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.badge{position:absolute;top:16px;right:16px;font-size:11px;font-weight:700;padding:5px 10px;border-radius:99px;letter-spacing:.4px}
+.badge.in{background:rgba(55,214,122,.15);color:var(--ok)}
+.badge.out{background:rgba(255,59,47,.14);color:var(--accent)}
+.cpu{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:800;letter-spacing:1.5px;color:var(--muted);text-transform:uppercase}
+.cpu b{color:var(--accent2)}
+.name{font-size:21px;font-weight:800;margin:6px 0 4px}
+.spec{color:var(--muted);font-size:13.5px;line-height:1.7;margin:8px 0 14px}
+.fps{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.fps-row{display:grid;grid-template-columns:110px 1fr 44px;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.bar{height:6px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden}
+.bar i{display:block;height:100%;border-radius:99px;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.price{font-size:24px;font-weight:900}
+.credit{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+.card-actions{display:flex;gap:10px}
+.card-actions .btn{flex:1;text-align:center;padding:11px 0;font-size:14px}
+
+/* шаги */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px;margin-top:30px}
+.step{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:24px}
+.step .num{width:42px;height:42px;border-radius:12px;background:linear-gradient(135deg,var(--accent),var(--accent2));display:grid;place-items:center;font-weight:900;margin-bottom:14px}
+.step h3{font-size:17px;margin-bottom:6px}
+.step p{color:var(--muted);font-size:14px}
+
+/* отзывы */
+.reviews{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:18px;margin-top:26px}
+.review{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+.review .stars{color:var(--accent2);letter-spacing:2px;margin-bottom:8px}
+.review p{font-size:14.5px;color:var(--muted)}
+.review .who{margin-top:12px;font-weight:700;font-size:14px}
+
+/* форма */
+.order{max-width:640px;margin:44px auto 0;background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:30px}
+.order h2{font-size:24px;margin-bottom:6px}
+.order p{color:var(--muted);font-size:14px;margin-bottom:18px}
+.field{margin-bottom:14px}
+.field label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
+.field input,.field select{width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:rgba(0,0,0,.3);color:var(--txt);font-size:15px;outline:none}
+.field input:focus,.field select:focus{border-color:var(--accent)}
+.sent{display:none;margin-top:14px;padding:12px;border-radius:10px;background:rgba(55,214,122,.12);color:var(--ok);font-size:14px}
+
+footer{margin-top:70px;border-top:1px solid var(--line);padding:34px 0 40px;color:var(--muted);font-size:14px}
+.foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:center}
+.socials{display:flex;gap:14px}
+.socials a{color:var(--muted)}
+.socials a:hover{color:var(--accent)}
+
+/* модалка */
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);display:none;align-items:center;justify-content:center;z-index:100;padding:20px}
+.modal.open{display:flex}
+.modal-box{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);max-width:560px;width:100%;padding:28px;max-height:85vh;overflow:auto}
+.modal-box h3{font-size:22px;margin-bottom:4px}
+.modal-box .plat{color:var(--accent2);font-size:13px;font-weight:700;letter-spacing:1px;text-transform:uppercase}
+.modal-box table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+.modal-box td{padding:9px 6px;border-bottom:1px solid var(--line);color:var(--muted)}
+.modal-box td:first-child{color:var(--txt);font-weight:600;width:44%}
+.modal-close{margin-top:6px}
+
+@media(max-width:760px){
+  nav.links{display:none}
+  .burger{display:block}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap nav">
+    <a class="logo" href="#"><span class="mark">&#9889;</span>TURBO<em>PC</em></a>
+    <nav class="links">
+      <a href="#catalog">Каталог</a><a href="#how">Как мы работаем</a><a href="#reviews">Отзывы</a><a href="#order">Заказать</a>
+    </nav>
+    <button class="burger" onclick="document.getElementById('mm').classList.toggle('open')">&#9776;</button>
+  </div>
+  <div class="mobile-menu" id="mm">
+    <a href="#catalog" onclick="mm()">Каталог</a><a href="#how" onclick="mm()">Как мы работаем</a><a href="#reviews" onclick="mm()">Отзывы</a><a href="#order" onclick="mm()">Заказать</a>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="stripe"></div>
+  <div class="wrap">
+    <h1>Собираем ПК <span>на максималках</span></h1>
+    <p>Готовые игровые сборки с проверкой каждой детали, стресс-тестом под нагрузкой и гарантией. Подберём конфигурацию под ваш бюджет и ваши игры.</p>
+    <a class="btn btn-primary" href="#catalog">Смотреть каталог</a>
+    <a class="btn btn-ghost" href="#order" style="margin-left:10px">Консультация</a>
+  </div>
+</section>
+
+<section id="catalog" class="wrap">
+  <div class="filters">
+    <button class="chip active" data-f="all" onclick="filter(this)">Все ПК</button>
+    <button class="chip" data-f="amd" onclick="filter(this)">AMD</button>
+    <button class="chip" data-f="intel" onclick="filter(this)">Intel</button>
+  </div>
+  <h2 class="section-title">Каталог сборок</h2>
+  <p class="section-sub">Каждая машина проходит 2-часовой стресс-тест перед выдачей</p>
+  <div class="catalog" id="grid"></div>
+</section>
+
+<section id="how" class="wrap" style="margin-top:70px">
+  <h2 class="section-title">Как мы работаем</h2>
+  <div class="steps">
+    <div class="step"><div class="num">1</div><h3>Заявка</h3><p>Оставляете заявку или пишете в мессенджер — уточняем бюджет и игры.</p></div>
+    <div class="step"><div class="num">2</div><h3>Подбор</h3><p>Предлагаем 2–3 конфигурации с объяснением, где есть смысл, а где переплата.</p></div>
+    <div class="step"><div class="num">3</div><h3>Сборка и тест</h3><p>Собираем, обновляем BIOS и драйверы, гоняем стресс-тест 2 часа.</p></div>
+    <div class="step"><div class="num">4</div><h3>Выдача</h3><p>Показываем тесты при вас, оформляем гарантию и чек.</p></div>
+  </div>
+</section>
+
+<section id="reviews" class="wrap" style="margin-top:70px">
+  <h2 class="section-title">Отзывы</h2>
+  <div class="reviews">
+    <div class="review"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>Взял сборку на 7500F + 5060 — в CS2 стабильные 300+ fps, киберпанк на высоких идёт как по маслу. Всё протестировали при мне.</p><div class="who">Дмитрий, Калуга</div></div>
+    <div class="review"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div><p>Заказывал маме простой ПК для работы — помогли не переплачивать, взяли то, что нужно. Приехало всё настроенное, софт установлен.</p><div class="who">Анна, Обнинск</div></div>
+    <div class="review"><div class="stars">&#9733;&#9733;&#9733;&#9733;&#9734;</div><p>Собрали под стрим на Ryzen 7. Отдельное спасибо за термопроклейку и укладку кабелей — внутри всё аккуратно.</p><div class="who">Игорь, Киров</div></div>
+  </div>
+</section>
+
+<section id="order" class="wrap">
+  <div class="order">
+    <h2>Оставить заявку</h2>
+    <p>Ответим в течение часа в рабочее время. Или пишите сразу: Telegram / WhatsApp</p>
+    <div class="field"><label>Ваше имя</label><input id="f-name" placeholder="Иван"></div>
+    <div class="field"><label>Телефон или Telegram</label><input id="f-contact" placeholder="+7 ... или @username"></div>
+    <div class="field"><label>Бюджет</label>
+      <select id="f-budget"><option>до 60 000 ₽</option><option>60–100 000 ₽</option><option>100–150 000 ₽</option><option>150 000+ ₽</option></select>
+    </div>
+    <div class="field"><label>Комментарий</label><input id="f-note" placeholder="Во что играете, что важно"></div>
+    <button class="btn btn-primary" style="width:100%" onclick="send()">Отправить заявку</button>
+    <div class="sent" id="sent">Заявка сохранена локально в демо-режиме. Подключите сюда свой Telegram-бот или CRM, чтобы получать заявки по-настоящему.</div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap foot">
+    <div>&copy; 2026 TURBOPC. Сборка игровых ПК под ключ.</div>
+    <div class="socials"><a href="#">Telegram</a><a href="#">WhatsApp</a><a href="#">VK</a></div>
+  </div>
+</footer>
+
+<div class="modal" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal-box">
+    <div class="plat" id="m-plat"></div>
+    <h3 id="m-name"></h3>
+    <table id="m-spec"></table>
+    <p style="color:var(--muted);font-size:14px" id="m-note"></p>
+    <button class="btn btn-ghost modal-close" onclick="closeModal()">Закрыть</button>
+  </div>
+</div>
+
+<script>
+const builds=[
+ {plat:'amd',brand:'AMD Ryzen 5 5500',name:'START',gpu:'RTX 5050 8GB',ram:'16 ГБ DDR4',ssd:'512 ГБ NVMe',price:64990,avail:true,
+  fps:{'CS2':85,'Dota 2':88,'Cyberpunk 2077':52,'Expedition 33':48},
+  spec:{'Процессор':'Ryzen 5 5500 (6 ядер / 12 потоков)','Видеокарта':'RTX 5050 8 ГБ','Память':'16 ГБ DDR4 3200','Накопитель':'SSD 512 ГБ NVMe','Блок питания':'600 Вт 80+ Bronze','Кулер':'башенный','ОС':'Windows 11 активирована'},
+  note:'Вход в Full HD-гейминг: киберспортивные игры на максимальных, тяжёлые — на средних.'},
+ {plat:'intel',brand:'Intel Core i3-12100F',name:'START I',gpu:'RTX 5050 8GB',ram:'16 ГБ DDR4',ssd:'512 ГБ NVMe',price:62990,avail:true,
+  fps:{'CS2':88,'Dota 2':86,'Cyberpunk 2077':54,'Expedition 33':49},
+  spec:{'Процессор':'Core i3-12100F (4 ядра / 8 потоков)','Видеокарта':'RTX 5050 8 ГБ','Память':'16 ГБ DDR4 3200','Накопитель':'SSD 512 ГБ NVMe','Блок питания':'600 Вт 80+ Bronze','Кулер':'башенный','ОС':'Windows 11 активирована'},
+  note:'Самая доступная точка входа в RTX-серию.'},
+ {plat:'amd',brand:'AMD Ryzen 5 7500F',name:'HYBRID',gpu:'RTX 5060 8GB',ram:'16 ГБ DDR5',ssd:'1 ТБ NVMe',price:89990,avail:true,
+  fps:{'CS2':92,'Dota 2':92,'Cyberpunk 2077':68,'Expedition 33':62},
+  spec:{'Процессор':'Ryzen 5 7500F (6 ядер / 12 потоков)','Видеокарта':'RTX 5060 8 ГБ','Память':'16 ГБ DDR5 5600','Накопитель':'SSD 1 ТБ NVMe','Блок питания':'650 Вт 80+ Bronze','Кулер':'башенный','ОС':'Windows 11 активирована'},
+  note:'Золотая середина: свежая платформа AM5 с апгрейдом на годы вперёд.'},
+ {plat:'intel',brand:'Intel Core i5-13400F',name:'HYBRID I',gpu:'RTX 5060 8GB',ram:'16 ГБ DDR5',ssd:'1 ТБ NVMe',price:92990,avail:true,
+  fps:{'CS2':91,'Dota 2':90,'Cyberpunk 2077':66,'Expedition 33':61},
+  spec:{'Процессор':'Core i5-13400F (10 ядер / 16 потоков)','Видеокарта':'RTX 5060 8 ГБ','Память':'16 ГБ DDR5 5600','Накопитель':'SSD 1 ТБ NVMe','Блок питания':'650 Вт 80+ Bronze','Кулер':'башенный','ОС':'Windows 11 активирована'},
+  note:'10 ядер — с запасом под стримы и рабочие задачи.'},
+ {plat:'amd',brand:'AMD Ryzen 7 7700',name:'POWER',gpu:'RTX 5070 12GB',ram:'32 ГБ DDR5',ssd:'1 ТБ NVMe',price:129990,avail:true,
+  fps:{'CS2':96,'Dota 2':95,'Cyberpunk 2077':82,'Expedition 33':76},
+  spec:{'Процессор':'Ryzen 7 7700 (8 ядер / 16 потоков)','Видеокарта':'RTX 5070 12 ГБ','Память':'32 ГБ DDR5 6000','Накопитель':'SSD 1 ТБ NVMe Gen4','Блок питания':'750 Вт 80+ Gold','Кулер':'башенный двухсекционный','ОС':'Windows 11 активирована'},
+  note:'2K-гейминг на высоких плюс стримы без просадок.'},
+ {plat:'intel',brand:'Intel Core i7-14700F',name:'POWER I',gpu:'RTX 5070 12GB',ram:'32 ГБ DDR5',ssd:'1 ТБ NVMe',price:134990,avail:false,
+  fps:{'CS2':96,'Dota 2':95,'Cyberpunk 2077':83,'Expedition 33':77},
+  spec:{'Процессор':'Core i7-14700F (20 ядер / 28 потоков)','Видеокарта':'RTX 5070 12 ГБ','Память':'32 ГБ DDR5 6000','Накопитель':'SSD 1 ТБ NVMe Gen4','Блок питания':'750 Вт 80+ Gold','Кулер':'СЖО 240 мм','ОС':'Windows 11 активирована'},
+  note:'Флагманский многопоточник для работы и игр одновременно.'},
+ {plat:'amd',brand:'AMD Ryzen 9 9950X3D',name:'PERFORMANCE',gpu:'RTX 5080 16GB',ram:'64 ГБ DDR5',ssd:'2 ТБ NVMe',price:249990,avail:false,
+  fps:{'CS2':100,'Dota 2':100,'Cyberpunk 2077':94,'Expedition 33':90},
+  spec:{'Процессор':'Ryzen 9 9950X3D (16 ядер, 3D V-Cache)','Видеокарта':'RTX 5080 16 ГБ','Память':'64 ГБ DDR5 6000','Накопитель':'SSD 2 ТБ NVMe Gen4','Блок питания':'1000 Вт 80+ Gold','Кулер':'СЖО 360 мм','ОС':'Windows 11 Pro активирована'},
+  note:'Топ-конфигурация: 4K на максимальных, стрим, монтаж, нейросети.'},
+ {plat:'intel',brand:'Intel Core Ultra 7 270K Plus',name:'PERFORMANCE I',gpu:'RTX 5080 16GB',ram:'64 ГБ DDR5',ssd:'2 ТБ NVMe',price:259990,avail:false,
+  fps:{'CS2':100,'Dota 2':100,'Cyberpunk 2077':93,'Expedition 33':89},
+  spec:{'Процессор':'Core Ultra 7 270K Plus','Видеокарта':'RTX 5080 16 ГБ','Память':'64 ГБ DDR5 6000','Накопитель':'SSD 2 ТБ NVMe Gen4','Блок питания':'1000 Вт 80+ Gold','Кулер':'СЖО 360 мм','ОС':'Windows 11 Pro активирована'},
+  note:'Флагман на Intel: NPU под нейросетевые задачи и максимальная частота.'}
+];
+let cur='all';
+function render(){
+  const grid=document.getElementById('grid');
+  grid.innerHTML='';
+  builds.filter(b=>cur==='all'||b.plat===cur).forEach(b=>{
+    const fpsHtml=Object.entries(b.fps).map(([g,v])=>
+      `<div class="fps-row"><span>${g}</span><div class="bar"><i style="width:${v}%"></i></div><span>${v*2}+</span></div>`).join('');
+    grid.insertAdjacentHTML('beforeend',`
+    <div class="card">
+      <span class="badge ${b.avail?'in':'out'}">${b.avail?'в наличии':'недоступна'}</span>
+      <div class="cpu">CPU <b>${b.plat==='amd'?'AMD':'Intel'}</b></div>
+      <div class="name">${b.name}</div>
+      <div class="spec">${b.brand} &bull; ${b.gpu}<br>${b.ram} &bull; ${b.ssd}</div>
+      <div class="fps">${fpsHtml}</div>
+      <div class="price">${b.price.toLocaleString('ru-RU')} &#8381;</div>
+      <div class="credit">или от ${Math.round(b.price/24).toLocaleString('ru-RU')} &#8381;/мес в рассрочку</div>
+      <div class="card-actions">
+        <button class="btn btn-primary" ${b.avail?'':'disabled style="opacity:.4;cursor:not-allowed"'}>Купить ПК</button>
+        <button class="btn btn-ghost" onclick="openModal(${builds.indexOf(b)})">Спецификация</button>
+      </div>
+    </div>`);
+  });
+}
+function filter(el){
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');cur=el.dataset.f;render();
+}
+function openModal(i){
+  const b=builds[i];
+  document.getElementById('m-plat').textContent=b.plat==='amd'?'AMD':'Intel';
+  document.getElementById('m-name').textContent=b.name+' — '+b.brand;
+  document.getElementById('m-spec').innerHTML=Object.entries(b.spec).map(([k,v])=>`<tr><td>${k}</td><td>${v}</td></tr>`).join('');
+  document.getElementById('m-note').textContent=b.note;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeModal(){document.getElementById('modal').classList.remove('open');document.body.style.overflow=''}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal()});
+function mm(){document.getElementById('mm').classList.remove('open')}
+function send(){
+  const n=document.getElementById('f-name').value.trim(),c=document.getElementById('f-contact').value.trim();
+  if(!n||!c){alert('Заполните имя и контакт');return}
+  document.getElementById('sent').style.display='block';
+}
+render();
+</script>
+</body>
+</html>
